@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CayleyPy &amp; Holography — Interactive Demos</title>
+<meta name="description" content="Interactive demo index for the CayleyPy holography work: Schreier graph and token graph visualizers, the Box-Ball System, permutohedron path-area demos, and word2vec walkthroughs.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="CayleyPy &amp; Holography — Interactive Demos">
+<meta property="og:description" content="A running collection of animated and interactive demos accompanying the CayleyPy holography work: Schreier graphs, token graphs, the Box-Ball System, and permutohedron path-area visualizations.">
+<meta property="og:image" content="https://fkhafizov.github.io/images/holo-demo-Dn-v3.png">
+<meta property="og:url" content="https://fkhafizov.github.io/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="CayleyPy &amp; Holography — Interactive Demos">
+<meta name="twitter:description" content="Interactive demos accompanying the CayleyPy holography work — Schreier graphs, token graphs, the Box-Ball System, and more.">
+<meta name="twitter:image" content="https://fkhafizov.github.io/images/holo-demo-Dn-v3.png">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230b1220'/%3E%3Cg stroke='%235ed3c8' stroke-width='1.6'%3E%3Cline x1='9' y1='22' x2='16' y2='9'/%3E%3Cline x1='16' y1='9' x2='23' y2='22'/%3E%3Cline x1='9' y1='22' x2='23' y2='22'/%3E%3C/g%3E%3Cg fill='%23ffb454'%3E%3Ccircle cx='16' cy='9' r='2.6'/%3E%3Ccircle cx='9' cy='22' r='2.6'/%3E%3Ccircle cx='23' cy='22' r='2.6'/%3E%3C/g%3E%3C/svg%3E">
+<style>
+  :root{
+    --bg: #0b1220;
+    --bg-panel: #111a2e;
+    --line: #24314f;
+    --ink: #e8ecf5;
+    --ink-dim: #9aa7c2;
+    --node: #ffb454;
+    --edge: #5ed3c8;
+    --edge-2: #7c8cf8;
+    --mono: "IBM Plex Mono", "SFMono-Regular", Menlo, Consolas, monospace;
+    --serif: "Newsreader", "Iowan Old Style", Georgia, serif;
+  }
+
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
+
+  body{
+    margin:0;
+    background:
+      radial-gradient(1200px 600px at 15% -10%, #131f3a 0%, transparent 60%),
+      radial-gradient(900px 500px at 100% 0%, #0e1830 0%, transparent 55%),
+      var(--bg);
+    color: var(--ink);
+    font-family: var(--serif);
+    line-height: 1.5;
+  }
+
+  /* ---------- decorative graph backdrop ---------- */
+  .lattice{
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    opacity: 0.35;
+    pointer-events: none;
+  }
+
+  /* ---------- hero ---------- */
+  header.hero{
+    position: relative;
+    z-index: 1;
+    padding: 6rem 6vw 4rem;
+    max-width: 1100px;
+  }
+
+  h1{
+    font-size: clamp(2.2rem, 5vw, 3.6rem);
+    font-weight: 500;
+    line-height: 1.08;
+    margin: 0 0 1.4rem;
+    letter-spacing: -0.01em;
+  }
+  h1 em{
+    font-style: italic;
+    color: var(--edge);
+  }
+
+  .lede{
+    color: var(--ink-dim);
+    font-size: 1.08rem;
+  }
+  .lede code, .inline-eq{
+    font-family: var(--mono);
+    color: var(--edge-2);
+    font-size: 0.94em;
+  }
+
+  /* ---------- nav / toc ---------- */
+  nav.toc{
+    position: relative;
+    z-index: 1;
+    max-width: 1100px;
+    margin: 0 6vw 3rem;
+    padding: 1rem 1.4rem;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: rgba(17,26,46,0.6);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.2rem;
+    font-family: var(--mono);
+    font-size: 0.82rem;
+  }
+  nav.toc a{
+    color: var(--ink-dim);
+    text-decoration: none;
+    padding: 0.2rem 0;
+    border-bottom: 1px solid transparent;
+    transition: color .15s ease, border-color .15s ease;
+  }
+  nav.toc a:hover{ color: var(--edge); border-color: var(--edge); }
+  nav.toc .sep{ color: var(--line); }
+
+  /* ---------- sections ---------- */
+  main{
+    position: relative;
+    z-index: 1;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 6vw 6rem;
+  }
+
+  section{
+    margin-bottom: 4.2rem;
+    scroll-margin-top: 2rem;
+  }
+
+  .section-head{
+    display: flex;
+    align-items: baseline;
+    gap: 0.9rem;
+    margin-bottom: 0.4rem;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 0.9rem;
+  }
+  .section-tag{
+    font-family: var(--mono);
+    font-size: 0.76rem;
+    color: var(--node);
+    letter-spacing: 0.08em;
+  }
+  .section-head h2{
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin: 0;
+  }
+  .section-note{
+    color: var(--ink-dim);
+    font-size: 0.92rem;
+    margin: 0.7rem 0 1.4rem;
+  }
+
+  /* ---------- link cards ---------- */
+  .card-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1rem;
+  }
+
+  a.card{
+    position: relative;
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    background: var(--bg-panel);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 1.1rem 1.2rem 1.15rem;
+    transition: border-color .18s ease, transform .18s ease, background .18s ease;
+    overflow: hidden;
+  }
+  a.card::before{
+    content: "";
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: linear-gradient(var(--edge), var(--edge-2));
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform .22s ease;
+  }
+  a.card:hover{
+    border-color: var(--edge);
+    background: #14203a;
+    transform: translateY(-2px);
+  }
+  a.card:hover::before{ transform: scaleY(1); }
+
+  .card-title{
+    font-family: var(--mono);
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 0.45rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .card-title .arrow{
+    color: var(--edge);
+    font-size: 0.85em;
+    transition: transform .18s ease;
+  }
+  a.card:hover .card-title .arrow{ transform: translateX(3px); }
+
+  .card-desc{
+    font-size: 0.88rem;
+    color: var(--ink-dim);
+    line-height: 1.55;
+  }
+  .card-url{
+    margin-top: 0.7rem;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: #7f8fb5;
+    word-break: break-all;
+  }
+
+  /* ---------- figure gallery ---------- */
+  .gallery-intro{
+    margin: 2.4rem 0 1.2rem;
+    padding-top: 1.6rem;
+    border-top: 1px dashed var(--line);
+  }
+  .gallery-intro h3{
+    font-family: var(--mono);
+    font-size: 0.92rem;
+    letter-spacing: 0.04em;
+    color: var(--edge-2);
+    margin: 0 0 0.5rem;
+    text-transform: uppercase;
+  }
+  .gallery-intro p{
+    color: var(--ink-dim);
+    font-size: 0.9rem;
+    margin: 0;
+  }
+
+  .figure-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 1.2rem;
+    margin-top: 1.2rem;
+  }
+  .figure-grid figure.wide{
+    grid-column: 1 / -1;
+  }
+
+  figure.shot{
+    margin: 0;
+    background: var(--bg-panel);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  figure.shot a{ display: block; line-height: 0; }
+  figure.shot img{
+    width: 100%;
+    height: auto;
+    display: block;
+    background: #fff;
+    transition: transform .25s ease;
+  }
+  figure.shot a:hover img{ transform: scale(1.015); }
+  figure.shot figcaption{
+    padding: 0.85rem 1.1rem 1rem;
+    border-top: 1px solid var(--line);
+  }
+  figure.shot .fig-label{
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--node);
+    letter-spacing: 0.04em;
+    display: block;
+    margin-bottom: 0.35rem;
+  }
+  figure.shot .fig-desc{
+    font-size: 0.86rem;
+    color: var(--ink-dim);
+    line-height: 1.55;
+  }
+
+  .callout{
+    background: var(--bg-panel);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--node);
+    border-radius: 8px;
+    padding: 0.9rem 1.2rem;
+    font-size: 0.9rem;
+    color: var(--ink-dim);
+    margin-top: 0.9rem;
+  }
+  .callout strong{ color: var(--ink); }
+
+  .pill{
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.06em;
+    color: var(--bg);
+    background: var(--node);
+    padding: 0.12rem 0.45rem;
+    border-radius: 999px;
+    margin-left: 0.4rem;
+    vertical-align: middle;
+  }
+
+  footer{
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 3rem 6vw 4rem;
+    color: #7f8fb5;
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    border-top: 1px solid var(--line);
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    a.card, a.card::before, .card-title .arrow{ transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<svg class="lattice" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <g stroke="#2a3a5e" stroke-width="1">
+    <line x1="80" y1="120" x2="320" y2="60"/>
+    <line x1="320" y1="60" x2="540" y2="180"/>
+    <line x1="540" y1="180" x2="380" y2="340"/>
+    <line x1="380" y1="340" x2="80" y2="120"/>
+    <line x1="540" y1="180" x2="780" y2="90"/>
+    <line x1="780" y1="90" x2="980" y2="230"/>
+    <line x1="980" y1="230" x2="780" y2="380"/>
+    <line x1="780" y1="380" x2="540" y2="180"/>
+    <line x1="980" y1="230" x2="1220" y2="140"/>
+    <line x1="1220" y1="140" x2="1380" y2="300"/>
+    <line x1="1380" y1="300" x2="1220" y2="460"/>
+    <line x1="1220" y1="460" x2="980" y2="230"/>
+    <line x1="380" y1="340" x2="560" y2="520"/>
+    <line x1="560" y1="520" x2="780" y2="380"/>
+    <line x1="560" y1="520" x2="420" y2="700"/>
+    <line x1="1220" y1="460" x2="1040" y2="650"/>
+    <line x1="1040" y1="650" x2="820" y2="560"/>
+    <line x1="820" y1="560" x2="780" y2="380"/>
+  </g>
+  <g fill="#ffb454">
+    <circle cx="80" cy="120" r="4"/>
+    <circle cx="320" cy="60" r="4"/>
+    <circle cx="540" cy="180" r="5"/>
+    <circle cx="380" cy="340" r="4"/>
+    <circle cx="780" cy="90" r="4"/>
+    <circle cx="980" cy="230" r="5"/>
+    <circle cx="780" cy="380" r="5"/>
+    <circle cx="1220" cy="140" r="4"/>
+    <circle cx="1380" cy="300" r="4"/>
+    <circle cx="1220" cy="460" r="5"/>
+    <circle cx="560" cy="520" r="4"/>
+    <circle cx="420" cy="700" r="4"/>
+    <circle cx="1040" cy="650" r="4"/>
+    <circle cx="820" cy="560" r="4"/>
+  </g>
+</svg>
+
+<header class="hero">
+  <h1>Graphs, holography &amp; <em>embeddings</em> — interactive companion pages</h1>
+  <p class="lede">
+    A running collection of animated and interactive demos accompanying the CayleyPy holography
+    work and related graph-theoretic explorations — Schreier graphs, token graphs, the Box-Ball
+    System, and a couple of word2vec detours. Items marked <code>(E)</code> include extended
+    explanatory material (lectures, slides, or a walk-through proof).
+  </p>
+  <a class="card" href="https://fkhafizov.github.io/animation/" target="_blank" rel="noopener" style="margin-top: 1.6rem; max-width: 420px;">
+    <div class="card-title">CayleyPy-4: AI-Holography <span class="arrow">↗</span></div>
+    <div class="card-desc">Landing page for the interactive visualizations accompanying the CayleyPy-4 AI-Holography paper.</div>
+    <div class="card-url">fkhafizov.github.io/animation/</div>
+  </a>
+</header>
+
+<nav class="toc" aria-label="Section index">
+  <a href="#why">00 · Why Holography</a><span class="sep">/</span>
+  <a href="#cycles">01 · Consecutive-Cycle Systems</a><span class="sep">/</span>
+  <a href="#holography">02 · More on Holography &amp; Graph Demos</a><span class="sep">/</span>
+  <a href="#kaggle">03 · Empirical Validation</a><span class="sep">/</span>
+  <a href="#embeddings">04 · Embeddings</a><span class="sep">/</span>
+  <a href="#misc">05 · Related</a>
+</nav>
+
+<main>
+
+  <section id="why">
+    <div class="section-head">
+      <span class="section-tag">00</span>
+      <h2>Why Holography</h2>
+    </div>
+    <p class="section-note">
+      The motivating case: a graph too large for brute-force search, and how the holographic
+      encoding sidesteps that entirely.
+    </p>
+    <div class="figure-grid">
+      <figure class="shot wide">
+        <a href="images/holo-demo-Dn-v3.png" target="_blank" rel="noopener">
+          <img src="images/holo-demo-Dn-v3.png" alt="Three-panel diagram showing holographic computation of d(X,Y) on the huge token graph Gamma(D252,126), reducing a 3.63x10^74-vertex search to a 251-edge computation on the tree D252, giving d = 1543">
+        </a>
+        <figcaption>
+          <span class="fig-label">Fig. 0 — Efficient d(X,Y) on a huge graph, Γ(D₂₅₂, 126)</span>
+          <span class="fig-desc">
+            The token graph <span class="inline-eq">Γ(D₂₅₂, 126)</span> has
+            <span class="inline-eq">|V(G)| = C(252,126) ≈ 3.63 × 10⁷⁴</span> vertices — comparable to the
+            number of states of a 5×5×5 Rubik's cube — so a direct BFS/shortest-path search for
+            <span class="inline-eq">d(X,Y)</span> is completely infeasible. Holography replaces that search with
+            an edge-height encoding <span class="inline-eq">η(X), η(Y)</span> on the underlying 251-edge tree
+            <span class="inline-eq">D₂₅₂</span>, so that
+            <span class="inline-eq">d(X,Y) = Σₑ |η_e(X) − η_e(Y)|</span> is computed from only 251 local
+            contributions instead of a search over <span class="inline-eq">10⁷⁴</span> vertices — giving
+            <span class="inline-eq">d(X,Y) = 1543</span> here.
+          </span>
+        </figcaption>
+      </figure>
+    </div>
+    <div class="callout">
+      <strong>Note:</strong> at this scale, direct BFS verification of the holographic distance formula is not
+      feasible — there is no ground truth to check against. In cases like this, where exact computation is out
+      of reach, the holographic approach still gives a very good approximation (see Consecutive Systems
+      illustrations below), one that can be further
+      improved with reinforcement learning.
+    </div>
+  </section>
+
+
+
+  <section id="cycles">
+    <div class="section-head">
+      <span class="section-tag">01</span>
+      <h2>Consecutive-Cycle Systems</h2>
+    </div>
+    <p class="section-note">Schreier graph visualizers and holography for permutation systems generated by consecutive 3- and 4-cycle moves, including the graph ↔ rectangle correspondence and a 3D Schreier graph rendering.</p>
+    <div class="card-grid">
+      <a class="card" href="https://fkhafizov.github.io/animation/holography_v3c.html" target="_blank" rel="noopener">
+        <div class="card-title">Graph ↔ Rectangle Holography <span class="arrow">↗</span></div>
+        <div class="card-desc">2-cycle graph visualization showing the holographic correspondence between a graph and a rectangle.</div>
+        <div class="card-url">fkhafizov.github.io/animation/holography_v3c.html</div>
+      </a>
+      <a class="card" href="https://fkhafizov.github.io/animation/schreier_graph_v4_o45.html" target="_blank" rel="noopener">
+        <div class="card-title">Schreier Graph (3D) <span class="arrow">↗</span></div>
+        <div class="card-desc">Rotatable 3D rendering of a Schreier graph, for exploring its structure directly.</div>
+        <div class="card-url">fkhafizov.github.io/animation/schreier_graph_v4_o45.html</div>
+      </a>
+      <a class="card" href="https://fkhafizov.github.io/ccycles/cc3-zk-nsn46-v12i.html" target="_blank" rel="noopener">
+        <div class="card-title">G₃(k, n) Schreier Graph Visualizer <span class="arrow">↗</span></div>
+        <div class="card-desc">Schreier graph visualizer for G₃(k, n) with its corresponding holography.</div>
+        <div class="card-url">fkhafizov.github.io/ccycles/cc3-zk-nsn46-v12i.html</div>
+      </a>
+      <a class="card" href="https://fkhafizov.github.io/ccycles/cc3moves-v2.html" target="_blank" rel="noopener">
+        <div class="card-title">Consecutive 3-Cycle Moves <span class="arrow">↗</span></div>
+        <div class="card-desc">Interactive demo of consecutive 3-cycle moves — cyclic rotations of every consecutive block of three elements.</div>
+        <div class="card-url">fkhafizov.github.io/ccycles/cc3moves-v2.html</div>
+      </a>
+      <a class="card" href="https://fkhafizov.github.io/ccycles/cc4-zk-nsn46-v25.html" target="_blank" rel="noopener">
+        <div class="card-title">G₄(k, n) Schreier Graph Visualizer <span class="arrow">↗</span></div>
+        <div class="card-desc">Schreier graph visualizer for G₄(k, n) with its corresponding holography.</div>
+        <div class="card-url">fkhafizov.github.io/ccycles/cc4-zk-nsn46-v25.html</div>
+      </a>
+      <a class="card" href="https://fkhafizov.github.io/ccycles/cc4moves-v12.html" target="_blank" rel="noopener">
+        <div class="card-title">Consecutive 4-Cycle Moves <span class="arrow">↗</span></div>
+        <div class="card-desc">Interactive demo of consecutive 4-cycle moves, the 4-block analogue of the 3-cycle system above.</div>
+        <div class="card-url">fkhafizov.github.io/ccycles/cc4moves-v12.html</div>
+      </a>
+    </div>
+
+    <div class="gallery-intro">
+      <h3>Figures — G₃(5, 9)</h3>
+      <p>
+        Two views of the Schreier graph <span class="inline-eq">G₃(5, 9)</span> — 9-bit strings with 5 zeros,
+        generated by consecutive 3-cycle moves, <span class="inline-eq">|V| = C(9,5) = 126</span>, showing the
+        full graph with its distance formula <span class="inline-eq">d(A,B) = (I(B)+Δ(B))/2</span> verified
+        against BFS.
+      </p>
+    </div>
+    <div class="figure-grid">
+      <figure class="shot wide">
+        <a href="images/g3-graph-analysis.png" target="_blank" rel="noopener">
+          <img src="images/g3-graph-analysis.png" alt="G3(5,9) graph with analysis panel showing distance formula, bounds, and mismatch count">
+        </a>
+        <figcaption>
+          <span class="fig-label">Fig. 1 — G₃(5,9), with analysis panel</span>
+          <span class="fig-desc">Same graph with the live analysis sidebar: <span class="inline-eq">|V| = 126</span>,
+            <span class="inline-eq">|E| = 735</span>, the distance formula
+            <span class="inline-eq">d(A,B) = (I(B)+Δ(B))/2</span> with
+            <span class="inline-eq">I(B) = Σᵢ(zᵢ−i)</span> and
+            <span class="inline-eq">Δ(B) = |Σᵢ(−1)^(i+1)(dᵢ mod 2)|</span>, and the diameter
+            <span class="inline-eq">diam = ⌈k(n−k)/2⌉ = 10</span>, confirmed by BFS.</span>
+        </figcaption>
+      </figure>
+      <figure class="shot wide">
+        <a href="images/g3-graph-full.png" target="_blank" rel="noopener">
+          <img src="images/g3-graph-full.png" alt="Full Schreier graph of G3(5,9) with node color-coded rings by BFS distance d and count c">
+        </a>
+        <figcaption>
+          <span class="fig-label">Fig. 2 — G₃(5,9), full graph</span>
+          <span class="fig-desc">Rings laid out by BFS distance <span class="inline-eq">d</span> from the root
+            <span class="inline-eq">000001111</span>, with the per-ring vertex count <span class="inline-eq">c</span>
+            labeled on the left. Red squares mark the 6 vertices where the closed-form distance formula
+            mismatches the true BFS distance.</span>
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section id="holography">
+    <div class="section-head">
+      <span class="section-tag">02</span>
+      <h2>More on Holography &amp; Graph Visualizations</h2>
+    </div>
+    <p class="section-note">Visualizations accompanying the CayleyPy-4 "AI-Holography" paper — path analysis, the Box-Ball System, and token-graph holography.</p>
+    <div class="card-grid">
+      <a class="card" href="https://fkhafizov.github.io/animation/young_tableaux_claude_v9.html" target="_blank" rel="noopener">
+        <div class="card-title">Paths in large graphs &amp; fluid dynamics <span class="arrow">↗</span></div>
+        <div class="card-desc">Analysis of paths in large graphs, connected to Young tableaux and fluid dynamics (PDEs).</div>
+        <div class="card-url">fkhafizov.github.io/animation/young_tableaux_claude_v9.html</div>
+      </a>
+      <a class="card" href="https://fkhafizov.github.io/animation/bbs_opus45_v2.html" target="_blank" rel="noopener">
+        <div class="card-title">Holography ↔ Box-Ball System <span class="arrow">↗</span></div>
+        <div class="card-desc">Interactive analysis of the connection between the holographic path image and the Box-Ball System.</div>
+        <div class="card-url">fkhafizov.github.io/animation/bbs_opus45_v2.html</div>
+      </a>
+      <a class="card" href="https://fkhafizov.github.io/animation/hdt-prf-v5.html" target="_blank" rel="noopener">
+        <div class="card-title">Holographic Distance Theorem <span class="pill">E</span> <span class="arrow">↗</span></div>
+        <div class="card-desc">Interactive proof of the Holographic Distance Theorem, worked through step by step.</div>
+        <div class="card-url">fkhafizov.github.io/animation/hdt-prf-v5.html</div>
+      </a>
+      <a class="card" href="https://fkhafizov.github.io/apps/binary-curve.html" target="_blank" rel="noopener">
+        <div class="card-title">Binary Strings &amp; Lattice Paths <span class="arrow">↗</span></div>
+        <div class="card-desc">More holography demos: the correspondence between binary strings and lattice paths.</div>
+        <div class="card-url">fkhafizov.github.io/apps/binary-curve.html</div>
+      </a>
+      <a class="card" href="https://fkhafizov.github.io/animation/gamma-D5-2-v6e.html" target="_blank" rel="noopener">
+        <div class="card-title">Holography — Γ(D₅, 2) token graph <span class="arrow">↗</span></div>
+        <div class="card-desc">Holographic visualization for the Γ(D₅, 2) token graph.</div>
+        <div class="card-url">fkhafizov.github.io/animation/gamma-D5-2-v6e.html</div>
+      </a>
+      <a class="card" href="https://fkhafizov.github.io/animation/gam-DE-v3b.html" target="_blank" rel="noopener">
+        <div class="card-title">Holography — Γ(E₅, 2) token graph <span class="arrow">↗</span></div>
+        <div class="card-desc">Holographic visualization for the Γ(E₅, 2) token graph, plus additional related demos.</div>
+        <div class="card-url">fkhafizov.github.io/animation/gam-DE-v3b.html</div>
+      </a>
+    </div>
+
+    <div class="gallery-intro">
+      <h3>Γ(Dₙ/Eₙ, k) — Token Graph Explorer v3</h3>
+      <p>
+        <strong>What is this?</strong> Choose a tree type (D or E), enter <span class="inline-eq">n</span> and
+        <span class="inline-eq">k</span>, press Start. The app builds <span class="inline-eq">Γ(T,k)</span>: all
+        <span class="inline-eq">C(n,k)</span> ways to place <span class="inline-eq">k</span> tokens on the
+        <span class="inline-eq">n</span>-node Dynkin tree <span class="inline-eq">T</span>, connected by single
+        token moves along tree edges.
+      </p>
+    </div>
+    <div class="figure-grid">
+      <figure class="shot wide">
+        <a href="images/e6-token-graph-formulas.png" target="_blank" rel="noopener">
+          <img src="images/e6-token-graph-formulas.png" alt="Gamma(E6,2) token graph laid out on the E6 Dynkin tree with edge labels and the distance formula d(X,Y) = sum over edges of |eta_e(X) - eta_e(Y)|">
+        </a>
+        <figcaption>
+          <span class="fig-label">Fig. 1 — Γ(E₆, 2) token graph, with distance formula</span>
+          <span class="fig-desc">Token graph for <span class="inline-eq">n = 6</span>, <span class="inline-eq">k = 2</span>
+            tokens on the E₆ tree — <span class="inline-eq">|V| = 15</span>, <span class="inline-eq">|E| = 20</span>,
+            <span class="inline-eq">diam = 6</span>. Vertices are the C(6,2) token placements; the formula
+            <span class="inline-eq">d(X,Y) = Σₑ |η_e(X) − η_e(Y)|</span> is verified against BFS for all 105 pairs.</span>
+        </figcaption>
+      </figure>
+      <figure class="shot wide">
+        <a href="images/e6-token-graph-holography.png" target="_blank" rel="noopener">
+          <img src="images/e6-token-graph-holography.png" alt="Holographic strip computing d(X,Y) for the Gamma(E6,2) token graph via a 2x5 rectangle area">
+        </a>
+        <figcaption>
+          <span class="fig-label">Fig. 2 — Holographic computation of d(X,Y)</span>
+          <span class="fig-desc">Same graph in inspect mode, computing the distance between two selected vertices
+            holographically: each edge's contribution <span class="inline-eq">|δ_e|</span> fills one column of a
+            2×5 rectangle, and the total area <span class="inline-eq">Σ|δ_e| = d(X,Y) = 3</span> reproduces the
+            direct sum <span class="inline-eq">d = 2 + 1 = 3</span> from the formula.</span>
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section id="kaggle">
+    <div class="section-head">
+      <span class="section-tag">03</span>
+      <h2>Empirical Validation</h2>
+    </div>
+    <p class="section-note">Notebooks that validate the graph-distance theory empirically via brute-force BFS.</p>
+    <div class="card-grid">
+      <a class="card" href="https://www.kaggle.com/code/zurman/s46a-cc3-knv1-n4-n24-ipynb/notebook?scriptVersionId=320895303" target="_blank" rel="noopener">
+        <div class="card-title">BFS distances — consecutive 3-cycles <span class="arrow">↗</span></div>
+        <div class="card-desc">Computes exact graph distances via BFS on the graph generated by consecutive 3-cycles (cyclic rotations of every consecutive block of three bits).</div>
+        <div class="card-url">kaggle.com/code/zurman/s46a-cc3-knv1-n4-n24-ipynb</div>
+      </a>
+      <a class="card" href="https://www.kaggle.com/code/zurman/roscc4-knv6-n9-n27/notebook" target="_blank" rel="noopener">
+        <div class="card-title">BFS distances — consecutive 4-cycles <span class="arrow">↗</span></div>
+        <div class="card-desc">Companion notebook extending the BFS exact-distance validation to the consecutive 4-cycle system.</div>
+        <div class="card-url">kaggle.com/code/zurman/roscc4-knv6-n9-n27</div>
+      </a>
+    </div>
+  </section>
+
+  <section id="embeddings">
+    <div class="section-head">
+      <span class="section-tag">04</span>
+      <h2>Embeddings</h2>
+    </div>
+    <p class="section-note">Two companion pages introducing word2vec: a walkthrough with lecture material, and a hands-on Skip-gram sandbox.</p>
+    <div class="card-grid">
+      <a class="card" href="https://fkhafizov.github.io/w2v_intro/" target="_blank" rel="noopener">
+        <div class="card-title">word2vec animated demo <span class="pill">E</span> <span class="arrow">↗</span></div>
+        <div class="card-desc">Animated introduction to word2vec, paired with video lectures and slides for a full walkthrough of the theory.</div>
+        <div class="card-url">fkhafizov.github.io/w2v_intro/</div>
+      </a>
+      <a class="card" href="https://fkhafizov.github.io/w2v_intro/w2v_jsdemo.html" target="_blank" rel="noopener">
+        <div class="card-title">Skip-gram embeddings demo <span class="arrow">↗</span></div>
+        <div class="card-desc">Interactive, in-browser Skip-gram word embeddings demo — train and explore embeddings live.</div>
+        <div class="card-url">fkhafizov.github.io/w2v_intro/w2v_jsdemo.html</div>
+      </a>
+    </div>
+  </section>
+
+  <section id="misc">
+    <div class="section-head">
+      <span class="section-tag">05</span>
+      <h2>Related</h2>
+    </div>
+    <p class="section-note">Lighter and adjacent material: the fluid-dynamics side of the path-analysis work, and a classic puzzle used as an aid for related graph research.</p>
+    <div class="card-grid">
+      <a class="card" href="https://fkhafizov.github.io/pdes/" target="_blank" rel="noopener">
+        <div class="card-title">PDE demos <span class="arrow">↗</span></div>
+        <div class="card-desc">Collection of PDE demos related to the graph path-analysis and fluid-dynamics connection.</div>
+        <div class="card-url">fkhafizov.github.io/pdes/</div>
+      </a>
+      <a class="card" href="https://fkhafizov.github.io/apps/pancake_notes.html" target="_blank" rel="noopener">
+        <div class="card-title">Pancake Problem <span class="arrow">↗</span></div>
+        <div class="card-desc">Interactive demo of the classic pancake sorting problem, used here as an aid for related graph research.</div>
+        <div class="card-url">fkhafizov.github.io/apps/pancake_notes.html</div>
+      </a>
+      <a class="card" href="https://fkhafizov.github.io/apps/roc_aac_path_length.html" target="_blank" rel="noopener">
+        <div class="card-title">ROC, AUC &amp; Path Length <span class="arrow">↗</span></div>
+        <div class="card-desc">Interactive ROC curve builder that animates threshold sweeps and AUC, connecting classifier evaluation to the path-length holography theme.</div>
+        <div class="card-url">fkhafizov.github.io/apps/roc_aac_path_length.html</div>
+      </a>
+      <a class="card" href="https://fkhafizov.github.io/apps/consecutive_cycles.html" target="_blank" rel="noopener">
+        <div class="card-title">Consecutive k-Cycle Permutation Graphs <span class="arrow">↗</span></div>
+        <div class="card-desc">Generates and renders the permutation graph on Sₙ produced by consecutive k-cycles, for any chosen n and k.</div>
+        <div class="card-url">fkhafizov.github.io/apps/consecutive_cycles.html</div>
+      </a>
+      <a class="card" href="https://fkhafizov.github.io/apps/paths_areas_v4.html" target="_blank" rel="noopener">
+        <div class="card-title">Permutohedron Sₙ: d(P,e) = Area <span class="arrow">↗</span></div>
+        <div class="card-desc">Draws inversion paths for two permutations on the permutohedron lattice and shows their distance to the identity as an enclosed area.</div>
+        <div class="card-url">fkhafizov.github.io/apps/paths_areas_v4.html</div>
+      </a>
+      <a class="card" href="https://fkhafizov.github.io/apps/pa_0123_o45_v1.html" target="_blank" rel="noopener">
+        <div class="card-title">Multiset Paths: 0ᵏ1ⁿ2ᵐ3ᵗ <span class="arrow">↗</span></div>
+        <div class="card-desc">Visualizes the three-rectangle area decomposition d(P,E) = A₃+A₂+A₁ for lattice paths over a 4-symbol multiset.</div>
+        <div class="card-url">fkhafizov.github.io/apps/pa_0123_o45_v1.html</div>
+      </a>
+      <a class="card" href="https://fkhafizov.github.io/apps/pa_0123_v2.html" target="_blank" rel="noopener">
+        <div class="card-title">Unified Lehmer-Code Diagram <span class="arrow">↗</span></div>
+        <div class="card-desc">Companion visualization that merges the three multiset-path rectangles into one unified Lehmer-code diagram sharing a common coordinate.</div>
+        <div class="card-url">fkhafizov.github.io/apps/pa_0123_v2.html</div>
+      </a>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  Index generated for fkhafizov.github.io demo collection · links open in a new tab
+</footer>
+
+</body>
+</html>
