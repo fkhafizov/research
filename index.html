@@ -280,6 +280,14 @@
     margin-top: 0.9rem;
   }
   .callout strong{ color: var(--ink); }
+  .callout ul{
+    margin: 0.7rem 0 0;
+    padding-left: 1.2rem;
+  }
+  .callout li{
+    margin: 0.4rem 0;
+  }
+  .callout li::marker{ color: var(--edge-2); }
 
   .pill{
     display: inline-block;
@@ -413,6 +421,22 @@
       of reach, the holographic approach still gives a very good approximation (see Consecutive Systems
       illustrations below), one that can be further
       improved with reinforcement learning.
+    </div>
+    <div class="callout">
+      <strong>Reinforcement-learning method.</strong> Let <span class="inline-eq">G</span> be a huge graph with a
+      canonical vertex <span class="inline-eq">A</span>. Use RL to estimate
+      <span class="inline-eq">d_G(X,A)</span>.
+      <ul>
+        <li>Formulate the problem as a deterministic shortest-path Markov decision process.</li>
+        <li>Compare algorithms such as DQN, Double DQN, dueling DQN, PPO, actor–critic methods, Monte Carlo tree
+          search, AlphaZero-style policy/value learning, and goal-conditioned RL.</li>
+        <li>Address the sparse-reward problem and propose reward shaping that does not change the optimal
+          policy.</li>
+        <li>Explain how the learned value function can be converted into an estimate of
+          <span class="inline-eq">d_G(X,A)</span>. Distinguish between methods that provide exact distances
+          and methods that provide only estimates.</li>
+        <li>Explain conditions under which a learned heuristic is admissible or consistent.</li>
+      </ul>
     </div>
   </section>
 
