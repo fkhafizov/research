@@ -72,6 +72,17 @@
     font-size: 0.94em;
   }
 
+  .hero-card-grid{
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+    margin-top: 1.6rem;
+    max-width: 900px;
+  }
+  .hero-card-grid a.card{
+    height: 100%;
+  }
+
   /* ---------- nav / toc ---------- */
   nav.toc{
     position: relative;
@@ -313,6 +324,10 @@
     border-top: 1px solid var(--line);
   }
 
+  @media (max-width: 760px){
+    .hero-card-grid{ grid-template-columns: 1fr; }
+  }
+
   @media (prefers-reduced-motion: reduce){
     a.card, a.card::before, .card-title .arrow{ transition: none; }
   }
@@ -367,11 +382,18 @@
     System, and a couple of word2vec detours. Items marked <code>(E)</code> include extended
     explanatory material (lectures, slides, or a walk-through proof).
   </p>
-  <a class="card" href="https://fkhafizov.github.io/animation/" target="_blank" rel="noopener" style="margin-top: 1.6rem; max-width: 420px;">
-    <div class="card-title">CayleyPy-4: AI-Holography <span class="arrow">↗</span></div>
-    <div class="card-desc">Landing page for the interactive visualizations accompanying the CayleyPy-4 AI-Holography paper.</div>
-    <div class="card-url">fkhafizov.github.io/animation/</div>
-  </a>
+  <div class="hero-card-grid">
+    <a class="card" href="https://fkhafizov.github.io/animation/" target="_blank" rel="noopener">
+      <div class="card-title">CayleyPy-4: AI-Holography <span class="arrow">↗</span></div>
+      <div class="card-desc">Landing page for the interactive visualizations accompanying the CayleyPy-4 AI-Holography paper.</div>
+      <div class="card-url">fkhafizov.github.io/animation/</div>
+    </a>
+    <a class="card" href="slides.html">
+      <div class="card-title">Slides: Cycles &amp; Tree Token Graphs <span class="arrow">→</span></div>
+      <div class="card-desc">Distance formulas, holography, Schreier graphs, and exact results for tree token graphs.</div>
+      <div class="card-url">slides.html</div>
+    </a>
+  </div>
 </header>
 
 <nav class="toc" aria-label="Section index">
