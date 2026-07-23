@@ -422,7 +422,7 @@
           <img src="images/holo-demo-Dn-v3.png" alt="Three-panel diagram showing holographic computation of d(X,Y) on the huge token graph Gamma(D252,126), reducing a 3.63x10^74-vertex search to a 251-edge computation on the tree D252, giving d = 1543">
         </a>
         <figcaption>
-          <span class="fig-label">Fig. 0 — Efficient d(X,Y) on a huge graph, Γ(D₂₅₂, 126)</span>
+          <span class="fig-label">Fig. 1 — Efficient d(X,Y) on a huge graph, Γ(D₂₅₂, 126)</span>
           <span class="fig-desc">
             The token graph <span class="inline-eq">Γ(D₂₅₂, 126)</span> has
             <span class="inline-eq">|V(G)| = C(252,126) ≈ 3.63 × 10⁷⁴</span> vertices — comparable to the
@@ -518,7 +518,7 @@
           <img src="images/g3-graph-analysis.png" alt="G3(5,9) graph with analysis panel showing distance formula, bounds, and mismatch count">
         </a>
         <figcaption>
-          <span class="fig-label">Fig. 1 — G₃(5,9), with analysis panel</span>
+          <span class="fig-label">Fig. 2 — G₃(5,9), with analysis panel</span>
           <span class="fig-desc">Same graph with the live analysis sidebar: <span class="inline-eq">|V| = 126</span>,
             <span class="inline-eq">|E| = 735</span>, the distance formula
             <span class="inline-eq">d(A,B) = (I(B)+Δ(B))/2</span> with
@@ -532,7 +532,7 @@
           <img src="images/g3-graph-full.png" alt="Full Schreier graph of G3(5,9) with node color-coded rings by BFS distance d and count c">
         </a>
         <figcaption>
-          <span class="fig-label">Fig. 2 — G₃(5,9), full graph</span>
+          <span class="fig-label">Fig. 3 — G₃(5,9), full graph</span>
           <span class="fig-desc">Rings laid out by BFS distance <span class="inline-eq">d</span> from the root
             <span class="inline-eq">000001111</span>, with the per-ring vertex count <span class="inline-eq">c</span>
             labeled on the left. Red squares mark the 6 vertices where the closed-form distance formula
@@ -587,7 +587,7 @@
           <img src="images/e6-token-graph-formulas.png" alt="Gamma(E6,2) token graph laid out on the E6 Dynkin tree with edge labels and the distance formula d(X,Y) = sum over edges of |eta_e(X) - eta_e(Y)|">
         </a>
         <figcaption>
-          <span class="fig-label">Fig. 1 — Γ(E₆, 2) token graph, with distance formula</span>
+          <span class="fig-label">Fig. 4 — Γ(E₆, 2) token graph, with distance formula</span>
           <span class="fig-desc">Token graph for <span class="inline-eq">n = 6</span>, <span class="inline-eq">k = 2</span>
             tokens on the E₆ tree — <span class="inline-eq">|V| = 15</span>, <span class="inline-eq">|E| = 20</span>,
             <span class="inline-eq">diam = 6</span>. Vertices are the C(6,2) token placements; the formula
@@ -599,7 +599,7 @@
           <img src="images/e6-token-graph-holography.png" alt="Holographic strip computing d(X,Y) for the Gamma(E6,2) token graph via a 2x5 rectangle area">
         </a>
         <figcaption>
-          <span class="fig-label">Fig. 2 — Holographic computation of d(X,Y)</span>
+          <span class="fig-label">Fig. 5 — Holographic computation of d(X,Y)</span>
           <span class="fig-desc">Same graph in inspect mode, computing the distance between two selected vertices
             holographically: each edge's contribution <span class="inline-eq">|δ_e|</span> fills one column of a
             2×5 rectangle, and the total area <span class="inline-eq">Σ|δ_e| = d(X,Y) = 3</span> reproduces the
@@ -634,7 +634,7 @@
           <img src="images/path-cont-to-inviscid-burgers-eq.png" alt="Interactive visualization connecting averaged continuations of binary paths with density evolution governed by the inviscid Burgers equation">
         </a>
         <figcaption>
-          <span class="fig-label">Fig. 3 — From discrete path continuations to inviscid Burgers flow</span>
+          <span class="fig-label">Fig. 6 — From discrete path continuations to inviscid Burgers flow</span>
           <span class="fig-desc">Averaging random monotone continuations of a binary path produces a macroscopic density profile that, under hydrodynamic scaling, converges to the entropy solution of the inviscid Burgers equation. The demo makes this bridge between discrete path combinatorics, nonlinear conservation laws, and fluid-like shock and rarefaction dynamics visible.</span>
         </figcaption>
       </figure>
@@ -643,7 +643,7 @@
           <img src="images/box-ball-system.png" alt="Box-Ball System simulator showing binary configurations evolving in time together with their lattice-path representation">
         </a>
         <figcaption>
-          <span class="fig-label">Fig. 4 — Lattice-path geometry evolving as a soliton system</span>
+          <span class="fig-label">Fig. 7 — Lattice-path geometry evolving as a soliton system</span>
           <span class="fig-desc">The binary-word-to-lattice-path encoding used above to expose distances between graph states also gives a geometric view of Box-Ball System evolution: empty boxes and occupied boxes become the two step directions of a path, while each time step rearranges the path as clusters of balls propagate and scatter like solitons. The same language therefore links static graph-distance geometry with an integrable discrete dynamics—without identifying BBS time with graph distance. The Box-Ball System was introduced by Japanese mathematicians Daisuke Takahashi and Junkichi Satsuma in their 1990 paper <a href="https://doi.org/10.1143/JPSJ.59.3514" target="_blank" rel="noopener"><em>A Soliton Cellular Automaton</em></a>.</span>
         </figcaption>
       </figure>
@@ -687,6 +687,24 @@
         <div class="card-desc">Interactive, in-browser Skip-gram word embeddings demo — train and explore embeddings live.</div>
         <div class="card-url">fkhafizov.github.io/w2v_intro/w2v_jsdemo.html</div>
       </a>
+    </div>
+
+    <div class="gallery-intro">
+      <h3>Skip-gram word embeddings</h3>
+      <p>
+        An interactive view of how local word-context predictions are transformed into a geometric representation.
+      </p>
+    </div>
+    <div class="figure-grid">
+      <figure class="shot wide">
+        <a href="images/embedding-demo.png" target="_blank" rel="noopener">
+          <img src="images/embedding-demo.png" alt="Interactive Skip-gram word2vec demo showing text preprocessing, training pairs, and the evolution from a random embedding to learned word clusters">
+        </a>
+        <figcaption>
+          <span class="fig-label">Fig. 8 — Learning semantic geometry with Skip-gram</span>
+          <span class="fig-desc">Embeddings are fundamental to modern machine learning and AI because they represent words, nodes, and other objects as vectors whose geometry can encode similarity and relationships. When data naturally live on a graph, accurate graph-distance models can help guide the construction and evaluation of embeddings so that the learned geometry better preserves the original structure. This interactive demo illustrates the core Skip-gram idea introduced by Tomas Mikolov and coauthors in the 2013 paper <a href="https://arxiv.org/abs/1301.3781" target="_blank" rel="noopener"><em>Efficient Estimation of Word Representations in Vector Space</em></a>: words are learned from their surrounding contexts, and words used in similar contexts move toward related regions of the embedding space.</span>
+        </figcaption>
+      </figure>
     </div>
   </section>
 
